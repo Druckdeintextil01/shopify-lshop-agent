@@ -10,14 +10,16 @@ async function mapProductsToLShop(lineItems) {
         return title.includes(kw);
       });
       if (!match) continue;
-     var farbe = '';
-var cm = p.farben_mapping || {};
-for (var de in cm) {
-  if (variant.includes(de.toLowerCase())) { farbe = cm[de]; break; }
-}
-if (!farbe) {
-  farbe = (item.variant_title || '').split('/')[0].trim();
-}
+      var farbe = '';
+      var cm = p.farben_mapping || {};
+      for (var de in cm) {
+        if (variant.includes(de.toLowerCase())) {
+          farbe = cm[de];
+          break;
+        }
+      }
+      if (!farbe) {
+        farbe = (item.variant_title || '').split('/')[0].trim();
       }
       var groesse = 'M';
       var m = variant.match(/\b(XS|S|M|L|XL|XXL|3XL|4XL|5XL)\b/i);
