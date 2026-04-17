@@ -14,7 +14,7 @@ async function addItemsToLShopCart(mappedItems) {
   });
   var context = await browser.newContext({
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    viewport: { width: 1280, height: 800 }
+    viewport: { width: 1280, height: 900 }
   });
   var page = await context.newPage();
   var results = [];
@@ -23,98 +23,186 @@ async function addItemsToLShopCart(mappedItems) {
     await login(page);
     for (var i = 0; i < validItems.length; i++) {
       var item = validItems[i];
-      console.log('Fuege hinzu: ' + item.lshop_artikel + ' | ' + item.farbe_lshop + ' | ' + item.groesse + ' | ' + item.quantity + 'x');
+      console.log('--- ' + item.lshop_artikel + ' | ' + item.farbe_lshop + ' | ' + item.groesse + ' | ' + item.quantity + 'x');
       try {
         await addSingleItem(page, item);
         results.push({ status: 'added', title: item.shopify_title });
-        console.log('Hinzugefuegt: ' + item.shopify_title);
+        console.log('OK: ' + item.shopify_title);
       } catch (err) {
         results.push({ status: 'error', title: item.shopify_title, error: err.message });
-        console.log('Fehler: ' + err.message);
+        console.log('FEHLER: ' + err.message);
       }
-      await page.waitForTimeout(1500);
+      await page.waitForTimeout(2000);
     }
   } finally {
     await browser.close();
   }
 
-  var success = results.some(function(r) { return r.status === 'added'; });
-  return { success: success, results: results };
+  return { success: results.some(function(r) { return r.status === 'added'; }), results: results };
 }
 
 async function login(page) {
-  console.log('Oeffne L-Shop...');
+  console.log('Login...');
   await page.goto(LSHOP_URL, { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(3000);
-  console.log('Start URL: ' + page.url());
-
   try {
     await page.locator('button:has-text("Akzeptieren"), #onetrust-accept-btn-handler').click({ timeout: 4000 });
     await page.waitForTimeout(1000);
   } catch (e) {}
 
-  console.log('Gehe zu Login...');
   await page.goto(LSHOP_URL + '/index.php?cl=user', { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(2000);
-  console.log('Login URL: ' + page.url());
 
   await page.evaluate(function(creds) {
-    var allInputs = Array.from(document.querySelectorAll('input'));
-    allInputs.forEach(function(inp) {
-      var isEmail = inp.type === 'email' || inp.name === 'lgn_usr' || inp.name === 'email' || inp.id === 'loginUser' || inp.id === 'email' || (inp.placeholder && (inp.placeholder.includes('Mail') || inp.placeholder.includes('Kunden')));
+    document.querySelectorAll('input').forEach(function(inp) {
+      var isEmail = inp.type === 'email' || inp.name === 'lgn_usr' || inp.name === 'email' || inp.id === 'email' || inp.id === 'loginUser' || (inp.placeholder && inp.placeholder.includes('Mail'));
       var isPass = inp.type === 'password' || inp.name === 'lgn_pwd';
-      if (isEmail) {
-        inp.value = creds.email;
-        inp.dispatchEvent(new Event('input', { bubbles: true }));
-        inp.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-      if (isPass) {
-        inp.value = creds.password;
-        inp.dispatchEvent(new Event('input', { bubbles: true }));
-        inp.dispatchEvent(new Event('change', { bubbles: true }));
-      }
+      if (isEmail) { inp.value = creds.email; inp.dispatchEvent(new Event('input', {bubbles:true})); inp.dispatchEvent(new Event('change', {bubbles:true})); }
+      if (isPass) { inp.value = creds.password; inp.dispatchEvent(new Event('input', {bubbles:true})); inp.dispatchEvent(new Event('change', {bubbles:true})); }
     });
   }, { email: process.env.LSHOP_EMAIL, password: process.env.LSHOP_PASSWORD });
 
   await page.waitForTimeout(500);
   await page.evaluate(function() {
-    var btns = Array.from(document.querySelectorAll('button[type="submit"], input[type="submit"]'));
+    var btns = document.querySelectorAll('button[type="submit"], input[type="submit"]');
     if (btns.length > 0) btns[0].click();
   });
-
   await page.waitForTimeout(5000);
   console.log('Nach Login: ' + page.url());
 }
 
 async function addSingleItem(page, item) {
-  var searchUrl = LSHOP_URL + '/index.php?cl=search&searchparam=' + encodeURIComponent(item.lshop_artikel);
-  await page.goto(searchUrl, { waitUntil: 'networkidle', timeout: 20000 });
+  // SCHRITT 1: Suchfeld finden und Artikelnummer eintippen
+  console.log('Tippe Artikelnummer in Suche: ' + item.lshop_artikel);
+  await page.goto(LSHOP_URL, { waitUntil: 'networkidle', timeout: 20000 });
   await page.waitForTimeout(2000);
-  console.log('Suche URL: ' + page.url());
 
-  try {
-    await page.locator('.productTitle a, h3 a, .title a, li.productItem a').first().click({ timeout: 6000 });
-    await page.waitForTimeout(2000);
-  } catch (e) {
-    console.log('Kein Produktlink');
+  var searchInput = page.locator('input[name="searchparam"], input[placeholder*="Artikel"], input[placeholder*="suche"], input[type="search"], #searchInput').first();
+  await searchInput.click({ timeout: 5000 });
+  await searchInput.fill(item.lshop_artikel);
+  await page.waitForTimeout(1500);
+
+  // SCHRITT 2: Autocomplete-Dropdown abwarten und ersten Vorschlag klicken
+  console.log('Warte auf Autocomplete...');
+  var dropdownClicked = false;
+  var dropdownSelectors = [
+    '.autocomplete-suggestion',
+    '.search-suggestion',
+    '.ui-autocomplete li',
+    '.dropdown-menu li a',
+    '[class*="suggest"] a',
+    '[class*="autocomplete"] a',
+    '[class*="search-result"] a',
+    '.tt-suggestion',
+    '.typeahead a'
+  ];
+
+  for (var d = 0; d < dropdownSelectors.length; d++) {
+    try {
+      await page.locator(dropdownSelectors[d]).first().click({ timeout: 3000 });
+      dropdownClicked = true;
+      console.log('Dropdown geklickt: ' + dropdownSelectors[d]);
+      break;
+    } catch (e) {}
   }
 
-  try {
-    await page.locator('label:has-text("' + item.farbe_lshop + '"), option:has-text("' + item.farbe_lshop + '")').first().click({ timeout: 4000 });
-    await page.waitForTimeout(500);
-  } catch (e) { console.log('Farbe nicht klickbar: ' + item.farbe_lshop); }
+  // Fallback: Enter drücken wenn kein Dropdown gefunden
+  if (!dropdownClicked) {
+    console.log('Kein Dropdown - druecke Enter');
+    await searchInput.press('Enter');
+    await page.waitForTimeout(2000);
+    // Ersten Treffer in Suchergebnissen klicken
+    var resultSelectors = ['.productTitle a', 'h3.title a', '.product-item a', 'li.productItem a', '.productBox a'];
+    for (var r = 0; r < resultSelectors.length; r++) {
+      try {
+        await page.locator(resultSelectors[r]).first().click({ timeout: 4000 });
+        console.log('Suchergebnis geklickt');
+        break;
+      } catch (e) {}
+    }
+  }
 
-  try {
-    await page.locator('label:has-text("' + item.groesse + '"), option:has-text("' + item.groesse + '")').first().click({ timeout: 4000 });
-    await page.waitForTimeout(500);
-  } catch (e) { console.log('Groesse nicht klickbar: ' + item.groesse); }
+  await page.waitForTimeout(2500);
+  console.log('Produkt URL: ' + page.url());
 
-  try {
-    await page.locator('input[type="number"], input[name="am"]').first().fill(String(item.quantity), { timeout: 3000 });
-  } catch (e) {}
+  // SCHRITT 3: Farbe anklicken
+  console.log('Waehle Farbe: ' + item.farbe_lshop);
+  var colorClicked = await page.evaluate(function(colorName) {
+    var allEls = Array.from(document.querySelectorAll('div, span, label, li, a, p'));
+    for (var i = 0; i < allEls.length; i++) {
+      var el = allEls[i];
+      if (el.children.length > 3) continue;
+      var text = (el.textContent || '').trim();
+      if (text.toLowerCase() === colorName.toLowerCase()) {
+        el.click();
+        return 'text-match: ' + text;
+      }
+    }
+    var titled = Array.from(document.querySelectorAll('[title], [alt]'));
+    for (var j = 0; j < titled.length; j++) {
+      var attr = (titled[j].title || titled[j].alt || '').trim();
+      if (attr.toLowerCase() === colorName.toLowerCase()) {
+        titled[j].click();
+        return 'attr-match: ' + attr;
+      }
+    }
+    return false;
+  }, item.farbe_lshop);
+  console.log('Farbe Ergebnis: ' + colorClicked);
+  await page.waitForTimeout(1500);
 
-  await page.locator('button:has-text("In den Warenkorb"), button:has-text("Warenkorb"), button[name="wr"]').first().click({ timeout: 8000 });
-  await page.waitForTimeout(2000);
+  // SCHRITT 4: Nach unten scrollen zur Groessen-Tabelle
+  await page.evaluate(function() { window.scrollBy(0, 600); });
+  await page.waitForTimeout(1000);
+
+  // SCHRITT 5: Groessen-Tabelle — richtige Zeile finden, Menge eintragen
+  console.log('Setze Menge ' + item.quantity + ' fuer Groesse ' + item.groesse);
+  var quantitySet = await page.evaluate(function(groesse, quantity) {
+    var rows = Array.from(document.querySelectorAll('tr'));
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      var tds = Array.from(row.querySelectorAll('td'));
+      var hasSize = tds.some(function(td) {
+        return (td.textContent || '').trim().toLowerCase() === groesse.toLowerCase();
+      });
+      if (hasSize) {
+        var inputs = row.querySelectorAll('input[type="text"], input[type="number"]');
+        for (var j = 0; j < inputs.length; j++) {
+          inputs[j].value = '';
+          inputs[j].focus();
+          inputs[j].value = String(quantity);
+          inputs[j].dispatchEvent(new Event('input', {bubbles:true}));
+          inputs[j].dispatchEvent(new Event('change', {bubbles:true}));
+          inputs[j].dispatchEvent(new KeyboardEvent('keyup', {bubbles:true}));
+          return true;
+        }
+      }
+    }
+    return false;
+  }, item.groesse, item.quantity);
+  console.log('Menge gesetzt: ' + quantitySet);
+  await page.waitForTimeout(500);
+
+  // SCHRITT 6: In den Warenkorb klicken
+  console.log('Klicke In den Warenkorb...');
+  var cartSelectors = [
+    'button:has-text("In den Warenkorb")',
+    'button:has-text("Warenkorb")',
+    'input[value*="Warenkorb"]',
+    'button[name="wr"]',
+    'input[name="wr"]',
+    '.btn-basket',
+    '#toBasket'
+  ];
+  for (var k = 0; k < cartSelectors.length; k++) {
+    try {
+      await page.locator(cartSelectors[k]).first().click({ timeout: 5000 });
+      console.log('Warenkorb geklickt!');
+      await page.waitForTimeout(2000);
+      return;
+    } catch (e) {}
+  }
+  throw new Error('Warenkorb-Button nicht gefunden');
 }
 
 module.exports = { addItemsToLShopCart };
