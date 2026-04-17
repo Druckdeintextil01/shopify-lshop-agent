@@ -38,43 +38,71 @@ async function addItemsToLShopCart(mappedItems) {
 }
 
 async function login(page) {
-  console.log('Oeffne L-Shop...');
-  await page.goto(LSHOP_URL, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  console.log('Oeffne L-Shop Login-Seite direkt...');
+  await page.goto(LSHOP_URL + '/index.php?cl=user', { waitUntil: 'domcontentloaded', timeout: 30000 });
   await page.waitForTimeout(2000);
 
   try {
-    await page.locator('button:has-text("Akzeptieren"), #onetrust-accept-btn-handler').click({ timeout: 4000 });
+    await page.locator('button:has-text("Akzeptieren"), #onetrust-accept-btn-handler, .cookie-accept').click({ timeout: 4000 });
     await page.waitForTimeout(1000);
   } catch (e) {}
 
-  console.log('Klicke auf Anmelden Button...');
-  await page.locator('a:has-text("Anmelden"), button:has-text("Anmelden"), .login-btn, [href*="login"]').first().click({ timeout: 8000 });
-  await page.waitForTimeout(2000);
+  console.log('Aktuelle URL: ' + page.url());
 
-  console.log('Fulle Login-Formular aus...');
-  await page.locator('input[placeholder*="E-Mail"], input[placeholder*="Kundennummer"], input[type="email"], input[name="email"]').first().fill(process.env.LSHOP_EMAIL, { timeout: 8000 });
-  await page.waitForTimeout(300);
-  await page.locator('input[type="password"], input[placeholder*="Passwort"]').first().fill(process.env.LSHOP_PASSWORD, { timeout: 8000 });
-  await page.waitForTimeout(300);
+  var email = process.env.LSHOP_EMAIL;
+  var password = process.env.LSHOP_PASSWORD;
 
-  console.log('Klicke Anmelden...');
-  await page.locator('button:has-text("Anmelden")').last().click({ timeout: 8000 });
+  var filled = await page.evaluate(function(creds) {
+    var filled = false;
+    var allInputs = Array.from(document.querySelectorAll('input'));
+    allInputs.forEach(function(inp) {
+      var isEmail = inp.type === 'email' || inp.name === 'lgn_usr' || inp.name === 'email' || inp.id === 'loginUser' || (inp.placeholder && inp.placeholder.includes('Mail'));
+      var isPassword = inp.type === 'password' || inp.name === 'lgn_pwd';
+      if (isEmail) {
+        inp.value = creds.email;
+        inp.dispatchEvent(new Event('input', { bubbles: true }));
+        inp.dispatchEvent(new Event('change', { bubbles: true }));
+        filled = true;
+        console.log('Email-Feld gefunden: ' + inp.name + ' / ' + inp.id);
+      }
+      if (isPassword) {
+        inp.value = creds.password;
+        inp.dispatchEvent(new Event('input', { bubbles: true }));
+        inp.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('Passwort-Feld gefunden: ' + inp.name + ' / ' + inp.id);
+      }
+    });
+    return filled;
+  }, { email: email, password: password });
+
+  console.log('Felder ausgefuellt: ' + filled);
+  await page.waitForTimeout(500);
+
+  await page.evaluate(function() {
+    var submitBtns = Array.from(document.querySelectorAll('button[type="submit"], input[type="submit"], button[name="lgn_cook"]'));
+    if (submitBtns.length > 0) {
+      submitBtns[0].click();
+      return;
+    }
+    var forms = Array.from(document.querySelectorAll('form'));
+    forms.forEach(function(form) { form.submit(); });
+  });
+
   await page.waitForTimeout(4000);
-
-  console.log('Login abgeschlossen. URL: ' + page.url());
+  console.log('Nach Login URL: ' + page.url());
 }
 
 async function addSingleItem(page, item) {
-  var searchUrl = LSHOP_URL + '?cl=search&searchparam=' + encodeURIComponent(item.lshop_artikel);
+  var searchUrl = LSHOP_URL + '/index.php?cl=search&searchparam=' + encodeURIComponent(item.lshop_artikel);
   await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 20000 });
   await page.waitForTimeout(2000);
 
   try {
-    var productLink = page.locator('.product-item a, .productTitle a, h3 a, .title a').first();
+    var productLink = page.locator('.product-item a, .productTitle a, h3 a, .title a, li.productItem a').first();
     await productLink.click({ timeout: 6000 });
     await page.waitForTimeout(2000);
   } catch (e) {
-    console.log('Produktlink nicht gefunden, versuche direkte Suche');
+    console.log('Kein Produktlink gefunden');
   }
 
   try {
@@ -98,7 +126,7 @@ async function addSingleItem(page, item) {
     await qtyInput.fill(String(item.quantity), { timeout: 3000 });
   } catch (e) {}
 
-  await page.locator('button:has-text("In den Warenkorb"), button:has-text("Warenkorb"), button[name="wr"], input[name="wr"]').first().click({ timeout: 8000 });
+  await page.locator('button:has-text("In den Warenkorb"), button:has-text("Warenkorb"), button[name="wr"], input[name="wr"], button[type="submit"]').first().click({ timeout: 8000 });
   await page.waitForTimeout(2000);
   console.log('Artikel in Warenkorb: ' + item.lshop_artikel);
 }
