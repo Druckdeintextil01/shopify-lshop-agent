@@ -17,7 +17,7 @@ function tryDirectMapping(item) {
   const title = (item.title || '').toLowerCase();
   const variant = (item.variant_title || '').toLowerCase();
   for (const product of products.produkte) {
-    if (!(product.shopify_keywords || []).some(kw => title.includes(kw))) continue;
+    if (!(product.shopify_keywords || []).some(function(kw) { return title.includes(kw); })) continue;
     return {
       shopify_title: item.title,
       lshop_artikel: product.lshop_artikel,
@@ -32,8 +32,19 @@ function tryDirectMapping(item) {
 }
 
 async function mapWithAI(item) {
-  const productList = products.produkte.map(p =>
-    `- Artikelnummer: ${p.lshop_artikel}, Name: ${p.lshop_name}, Keywords: ${p.shopify_keywords.join(', ')}`
-  ).join('\n');
-  const prompt = `Du bist Assistent für ein Textildruck-Unternehmen. Ordne diesen Shopify-Artikel einem L-Shop Artikel zu.
-Shopify: ${item.title} | Variante: ${item.variant_title || 'ke
+  const productList = products.produkte.map(function(p) {
+    return '- Artikelnummer: ' + p.lshop_artikel + ', Name: ' + p.lshop_name;
+  }).join('\n');
+
+  const prompt = 'Du bist Assistent fuer ein Textildruck-Unternehmen.\n' +
+    'Ordne diesen Shopify-Artikel einem L-Shop Artikel zu.\n' +
+    'Shopify: ' + item.title + ' | Variante: ' + (item.variant_title || 'keine') + ' | Menge: ' + item.quantity + '\n' +
+    'L-Shop Artikel:\n' + productList + '\n' +
+    'Antworte NUR mit JSON: {"lshop_artikel":"...","farbe_lshop":"...","groesse":"..."}\n' +
+    'Wenn nicht gefunden: {"error":"nicht gefunden"}';
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 300,
+      messages: [{ role: 'user', c
