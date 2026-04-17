@@ -38,10 +38,10 @@ async function login(page) {
   try {
     await page.locator('button:has-text("Akzeptieren")').click({ timeout: 3000 });
   } catch {}
-    await page.locator('input[type="email"], input[name="email"], input[id*="email"], input[placeholder*="E-Mail"], input[placeholder*="email"]').first().fill(process.env.LSHOP_EMAIL);
-    await page.locator('input[type="password"], input[name="password"], input[id*="password"]').first().fill(process.env.LSHOP_PASSWORD);
-    await page.locator('button[type="submit"], input[type="submit"], button:has-text("Anmelden"), button:has-text("Login"), button:has-text("Einloggen")').first().click();
-    await page.waitForTimeout(3000);
+    await page.locator('input[id="email"]:visible, input[name="email"]:visible, input[type="email"]:visible').first().fill(process.env.LSHOP_EMAIL, { force: true });
+await page.locator('input[type="password"]:visible, input[name="password"]:visible').first().fill(process.env.LSHOP_PASSWORD, { force: true });
+await page.locator('button[type="submit"]:visible, button:has-text("Anmelden"):visible, button:has-text("Login"):visible').first().click({ force: true });
+await page.waitForTimeout(3000);
   await page.waitForNavigation({ waitUntil: 'networkidle', timeout: 15000 });
 }
 
