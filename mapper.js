@@ -1,50 +1,36 @@
-const Anthropic = require('@anthropic-ai/sdk');
 const products = require('./config/products.json');
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 async function mapProductsToLShop(lineItems) {
-  const mappedItems = [];
-  for (const item of lineItems) {
-    const directMatch = tryDirectMapping(item);
-    if (directMatch) { mappedItems.push(directMatch); continue; }
-    const aiMatch = await mapWithAI(item);
-    mappedItems.push(aiMatch || { shopify_title: item.title, error: 'Nicht gefunden', quantity: item.quantity });
-  }
-  return mappedItems;
+  return lineItems.map(function(item) {
+    var title = (item.title || '').toLowerCase();
+    var variant = (item.variant_title || '').toLowerCase();
+    for (var i = 0; i < products.produkte.length; i++) {
+      var p = products.produkte[i];
+      var match = (p.shopify_keywords || []).some(function(kw) {
+        return title.includes(kw);
+      });
+      if (!match) continue;
+      var farbe = 'Black';
+      var cm = p.farben_mapping || {};
+      for (var de in cm) {
+        if (variant.includes(de.toLowerCase())) { farbe = cm[de]; break; }
+      }
+      var groesse = 'M';
+      var m = variant.match(/\b(XS|S|M|L|XL|XXL|3XL|4XL|5XL)\b/i);
+      if (m) groesse = m[1].toUpperCase();
+      return {
+        shopify_title: item.title,
+        lshop_artikel: p.lshop_artikel,
+        lshop_name: p.lshop_name,
+        farbe_lshop: farbe,
+        groesse: groesse,
+        quantity: item.quantity,
+        mapped_by: 'config'
+      };
+    }
+    console.log('Nicht gefunden: ' + item.title);
+    return { shopify_title: item.title, error: 'Nicht gefunden', quantity: item.quantity };
+  });
 }
 
-function tryDirectMapping(item) {
-  const title = (item.title || '').toLowerCase();
-  const variant = (item.variant_title || '').toLowerCase();
-  for (const product of products.produkte) {
-    if (!(product.shopify_keywords || []).some(function(kw) { return title.includes(kw); })) continue;
-    return {
-      shopify_title: item.title,
-      lshop_artikel: product.lshop_artikel,
-      lshop_name: product.lshop_name,
-      farbe_lshop: extractColor(variant, product.farben_mapping),
-      groesse: extractSize(variant),
-      quantity: item.quantity,
-      mapped_by: 'config'
-    };
-  }
-  return null;
-}
-
-async function mapWithAI(item) {
-  const productList = products.produkte.map(function(p) {
-    return '- Artikelnummer: ' + p.lshop_artikel + ', Name: ' + p.lshop_name;
-  }).join('\n');
-
-  const prompt = 'Du bist Assistent fuer ein Textildruck-Unternehmen.\n' +
-    'Ordne diesen Shopify-Artikel einem L-Shop Artikel zu.\n' +
-    'Shopify: ' + item.title + ' | Variante: ' + (item.variant_title || 'keine') + ' | Menge: ' + item.quantity + '\n' +
-    'L-Shop Artikel:\n' + productList + '\n' +
-    'Antworte NUR mit JSON: {"lshop_artikel":"...","farbe_lshop":"...","groesse":"..."}\n' +
-    'Wenn nicht gefunden: {"error":"nicht gefunden"}';
-
-  try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 300,
-      messages: [{ role: 'user', c
+module.exports = { mapProductsToLShop };
