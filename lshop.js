@@ -15,19 +15,34 @@ async function addItemsToLShopCart(mappedItems) {
 
   try {
     await login(page);
-    for (const item of validItems) {
-      console.log(`Füge hinzu: ${item.lshop_artikel} | ${item.farbe_lshop} | ${item.groesse} | ${item.quantity}x`);
-      try {
-        await addSingleItem(page, item);
-        results.push({ ...item, status: 'added' });
-      } catch (err) {
-        console.error(`Fehler bei ${item.shopify_title}:`, err.message);
-        results.push({ ...item, status: 'error', error: err.message });
-      }
-      await page.waitForTimeout(1000);
+   async function login(page) {
+  await page.goto(LSHOP_URL + '/login', { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.waitForTimeout(2000);
+  try {
+    await page.locator('button:has-text("Akzeptieren"), button:has-text("Accept"), #onetrust-accept-btn-handler').click({ timeout: 3000 });
+    await page.waitForTimeout(1000);
+  } catch {}
+  await page.evaluate(function(creds) {
+    var inputs = document.querySelectorAll('input[name="email"], input[type="email"], input[id="email"]');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].value = creds.email;
+      inputs[i].dispatchEvent(new Event('input', { bubbles: true }));
+      inputs[i].dispatchEvent(new Event('change', { bubbles: true }));
     }
-  } finally {
-    await browser.close();
+    var passwords = document.querySelectorAll('input[type="password"], input[name="password"]');
+    for (var i = 0; i < passwords.length; i++) {
+      passwords[i].value = creds.password;
+      passwords[i].dispatchEvent(new Event('input', { bubbles: true }));
+      passwords[i].dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }, { email: process.env.LSHOP_EMAIL, password: process.env.LSHOP_PASSWORD });
+  await page.waitForTimeout(500);
+  await page.evaluate(function() {
+    var btns = document.querySelectorAll('button[type="submit"], input[type="submit"]');
+    if (btns.length > 0) btns[btns.length - 1].click();
+  });
+  await page.waitForTimeout(4000);
+}
   }
 
   return { success: results.some(r => r.status === 'added'), results };
