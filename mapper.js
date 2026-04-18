@@ -13,14 +13,9 @@ async function mapProductsToLShop(lineItems) {
       var farbe = '';
       var cm = p.farben_mapping || {};
       for (var de in cm) {
-        if (variant.includes(de.toLowerCase())) {
-          farbe = cm[de];
-          break;
-        }
+        if (variant.includes(de.toLowerCase())) { farbe = cm[de]; break; }
       }
-      if (!farbe) {
-        farbe = (item.variant_title || '').split('/')[0].trim();
-      }
+      if (!farbe) farbe = (item.variant_title || '').split('/')[0].trim();
       var groesse = 'M';
       var m = variant.match(/\b(XS|S|M|L|XL|XXL|3XL|4XL|5XL)\b/i);
       if (m) groesse = m[1].toUpperCase();
@@ -28,6 +23,7 @@ async function mapProductsToLShop(lineItems) {
         shopify_title: item.title,
         lshop_artikel: p.lshop_artikel,
         lshop_name: p.lshop_name,
+        lshop_url: p.lshop_url || null,
         farbe_lshop: farbe,
         groesse: groesse,
         quantity: item.quantity,
