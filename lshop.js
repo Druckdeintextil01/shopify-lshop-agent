@@ -8,7 +8,10 @@ async function addItemsToLShopCart(mappedItems) {
   var validItems = mappedItems.filter(function(item) { return !item.error; });
   if (validItems.length === 0) return { success: false, error: 'Keine Artikel' };
 
-  var browser = await chromium.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] });
+  var browser = await chromium.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+  });
   var context = await browser.newContext({
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     viewport: { width: 1280, height: 900 }
@@ -40,31 +43,45 @@ async function login(page) {
   console.log('Login...');
   await page.goto(LSHOP_URL + '/index.php?cl=user&lang=0', { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(2000);
-  try { await page.locator('button:has-text("Akzeptieren"), #onetrust-accept-btn-handler').click({ timeout: 3000 }); await page.waitForTimeout(1000); } catch (e) {}
+
+  try {
+    await page.locator('button:has-text("Akzeptieren"), #onetrust-accept-btn-handler').click({ timeout: 3000 });
+    await page.waitForTimeout(1000);
+  } catch (e) {}
 
   await page.evaluate(function(creds) {
     document.querySelectorAll('input').forEach(function(inp) {
       var isEmail = inp.type === 'email' || inp.name === 'lgn_usr' || inp.name === 'email' || inp.id === 'email' || inp.id === 'loginUser' || (inp.placeholder && (inp.placeholder.includes('Mail') || inp.placeholder.includes('Kunden')));
       var isPass = inp.type === 'password' || inp.name === 'lgn_pwd';
-      if (isEmail) { inp.value = creds.email; inp.dispatchEvent(new Event('input', {bubbles:true})); inp.dispatchEvent(new Event('change', {bubbles:true})); }
-      if (isPass) { inp.value = creds.password; inp.dispatchEvent(new Event('input', {bubbles:true})); inp.dispatchEvent(new Event('change', {bubbles:true})); }
+      if (isEmail) {
+        inp.value = creds.email;
+        inp.dispatchEvent(new Event('input', { bubbles: true }));
+        inp.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      if (isPass) {
+        inp.value = creds.password;
+        inp.dispatchEvent(new Event('input', { bubbles: true }));
+        inp.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     });
   }, { email: process.env.LSHOP_EMAIL, password: process.env.LSHOP_PASSWORD });
 
   await page.waitForTimeout(500);
-  await page.evaluate(function() { var btns = document.querySelectorAll('button[type="submit"], input[type="submit"]'); if (btns.length > 0) btns[0].click(); });
+  await page.evaluate(function() {
+    var btns = document.querySelectorAll('button[type="submit"], input[type="submit"]');
+    if (btns.length > 0) btns[0].click();
+  });
   await page.waitForTimeout(4000);
   console.log('Eingeloggt. URL: ' + page.url());
 }
 
 async function addSingleItem(page, item) {
-  // Direkte URL nutzen wenn vorhanden
+  // Direkte URL nutzen wenn vorhanden, sonst Autocomplete
   var productUrl = item.lshop_url || null;
 
   if (productUrl) {
-    console.log('Nutze direkten Link: ' + productUrl);
+    console.log('Direkter Link: ' + productUrl);
   } else {
-    // Fallback: Autocomplete Suchfeld
     console.log('Suche via Suchfeld: ' + item.lshop_artikel);
     await page.goto(LSHOP_URL + '/index.php?lang=0', { waitUntil: 'networkidle', timeout: 20000 });
     await page.waitForTimeout(2000);
@@ -86,7 +103,9 @@ async function addSingleItem(page, item) {
       return null;
     });
 
-    if (!productUrl) throw new Error('Kein Link gefunden fuer: ' + item.lshop_artikel + '. Bitte URL in products.json eintragen.');
+    if (!productUrl) {
+      throw new Error('Kein Link gefunden fuer: ' + item.lshop_artikel + '. Bitte URL in products.json unter "lshop_url" eintragen.');
+    }
   }
 
   // Zur Produktseite navigieren
@@ -106,10 +125,10 @@ async function addSingleItem(page, item) {
       if (text === target) {
         var p = el.parentElement;
         if (p) { p.click(); return 'OK: ' + text; }
-        el.click(); return 'OK-direct: ' + text;
+        el.click();
+        return 'OK-direct: ' + text;
       }
     }
-    // Partial match
     for (var j = 0; j < allEls.length; j++) {
       var el2 = allEls[j];
       if (el2.children.length > 0) continue;
@@ -124,11 +143,7 @@ async function addSingleItem(page, item) {
   console.log('Farbe: ' + colorResult);
   await page.waitForTimeout(2000);
 
-  // Runterscrollen zur Größentabelle
-  await page.evaluate(function() { window.scrollBy(0, 500); });
-  await page.waitForTimeout(1000);
-
-  // Größe finden und + Button klicken
+  // Größentabelle suchen
   console.log('Groesse: ' + item.groesse + ' | Menge: ' + item.quantity);
   var rows = page.locator('tr');
   var rowCount = await rows.count();
@@ -138,40 +153,65 @@ async function addSingleItem(page, item) {
     var row = rows.nth(r);
     var cells = row.locator('td');
     var cellCount = await cells.count();
+
     for (var c = 0; c < Math.min(cellCount, 3); c++) {
       var cellText = '';
       try { cellText = (await cells.nth(c).textContent() || '').trim(); } catch (e) { continue; }
+
       if (cellText.toUpperCase() === item.groesse.toUpperCase()) {
         console.log('Groesse ' + item.groesse + ' gefunden in Zeile ' + r);
+
+        // Erst in Sicht scrollen
+        try { await row.scrollIntoViewIfNeeded(); } catch (e) {}
+        await page.waitForTimeout(500);
+
         var plusBtn = row.locator('button:has-text("+")').first();
         if (await plusBtn.count() > 0) {
+          try { await plusBtn.scrollIntoViewIfNeeded(); } catch (e) {}
+          await page.waitForTimeout(300);
           for (var q = 0; q < item.quantity; q++) {
-            await plusBtn.click({ timeout: 3000 });
+            await plusBtn.click({ timeout: 5000, force: true });
             await page.waitForTimeout(300);
           }
           console.log('+ geklickt ' + item.quantity + 'x');
         } else {
           var input = row.locator('input').first();
-          await input.click({ timeout: 2000 });
+          try { await input.scrollIntoViewIfNeeded(); } catch (e) {}
+          await page.waitForTimeout(300);
+          await input.click({ timeout: 3000, force: true });
           await input.fill(String(item.quantity));
           await input.press('Tab');
           console.log('Input gesetzt: ' + item.quantity);
         }
-        sizeFound = true; break;
+        sizeFound = true;
+        break;
       }
     }
     if (sizeFound) break;
   }
 
-  if (!sizeFound) throw new Error('Groesse ' + item.groesse + ' nicht gefunden. Farbe: ' + colorResult);
+  if (!sizeFound) {
+    throw new Error('Groesse ' + item.groesse + ' nicht gefunden. Farbe: ' + colorResult);
+  }
+
   await page.waitForTimeout(500);
 
   // In den Warenkorb
   console.log('In den Warenkorb...');
-  var cartSelectors = ['button:has-text("In den Warenkorb")', 'button:has-text("Warenkorb")', 'button[name="wr"]', 'input[name="wr"]', '.btn-basket', '#toBasket'];
+  var cartSelectors = [
+    'button:has-text("In den Warenkorb")',
+    'button:has-text("Warenkorb")',
+    'button[name="wr"]',
+    'input[name="wr"]',
+    '.btn-basket',
+    '#toBasket'
+  ];
   for (var k = 0; k < cartSelectors.length; k++) {
     try {
-      if (await page.locator(cartSelectors[k]).count() > 0) {
+      var cnt = await page.locator(cartSelectors[k]).count();
+      if (cnt > 0) {
+        await page.locator(cartSelectors[k]).scrollIntoViewIfNeeded();
+        await page.waitForTimeout(300);
         await page.locator(cartSelectors[k]).first().click({ timeout: 5000 });
         console.log('Warenkorb geklickt!');
         await page.waitForTimeout(2000);
