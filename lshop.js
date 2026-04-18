@@ -9,7 +9,10 @@ async function addItemsToLShopCart(mappedItems) {
   if (validItems.length === 0) return { success: false, error: 'Keine Artikel' };
 
   var browser = await chromium.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] });
-  var context = await browser.newContext({ userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', viewport: { width: 1280, height: 900 } });
+  var context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    viewport: { width: 1280, height: 900 }
+  });
   var page = await context.newPage();
   var results = [];
 
@@ -38,6 +41,7 @@ async function login(page) {
   await page.goto(LSHOP_URL + '/index.php?cl=user&lang=0', { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(2000);
   try { await page.locator('button:has-text("Akzeptieren"), #onetrust-accept-btn-handler').click({ timeout: 3000 }); await page.waitForTimeout(1000); } catch (e) {}
+
   await page.evaluate(function(creds) {
     document.querySelectorAll('input').forEach(function(inp) {
       var isEmail = inp.type === 'email' || inp.name === 'lgn_usr' || inp.name === 'email' || inp.id === 'email' || inp.id === 'loginUser' || (inp.placeholder && (inp.placeholder.includes('Mail') || inp.placeholder.includes('Kunden')));
@@ -46,6 +50,7 @@ async function login(page) {
       if (isPass) { inp.value = creds.password; inp.dispatchEvent(new Event('input', {bubbles:true})); inp.dispatchEvent(new Event('change', {bubbles:true})); }
     });
   }, { email: process.env.LSHOP_EMAIL, password: process.env.LSHOP_PASSWORD });
+
   await page.waitForTimeout(500);
   await page.evaluate(function() { var btns = document.querySelectorAll('button[type="submit"], input[type="submit"]'); if (btns.length > 0) btns[0].click(); });
   await page.waitForTimeout(4000);
@@ -53,43 +58,43 @@ async function login(page) {
 }
 
 async function addSingleItem(page, item) {
-  var searchUrl = LSHOP_URL + '/index.php?lang=0&cl=search&searchparam=' + encodeURIComponent(item.lshop_artikel);
-  console.log('Suche: ' + item.lshop_artikel);
-  await page.goto(searchUrl, { waitUntil: 'networkidle', timeout: 20000 });
-  await page.waitForTimeout(2000);
+  // Direkte URL nutzen wenn vorhanden
+  var productUrl = item.lshop_url || null;
 
-  var allLinks = await page.evaluate(function() {
-    return Array.from(document.querySelectorAll('a[href]')).map(function(l) {
-      return { text: (l.textContent || '').trim().substring(0, 30), href: l.href };
-    }).filter(function(l) { return l.href.length > 10 && !l.href.includes('javascript'); });
-  });
-  console.log('Links: ' + allLinks.slice(0, 10).map(function(l) { return '"' + l.text + '" -> ' + l.href; }).join(' | '));
+  if (productUrl) {
+    console.log('Nutze direkten Link: ' + productUrl);
+  } else {
+    // Fallback: Autocomplete Suchfeld
+    console.log('Suche via Suchfeld: ' + item.lshop_artikel);
+    await page.goto(LSHOP_URL + '/index.php?lang=0', { waitUntil: 'networkidle', timeout: 20000 });
+    await page.waitForTimeout(2000);
 
-  var productLink = await page.evaluate(function(data) {
-    var art = data.artikelnummer.toLowerCase();
-    var links = Array.from(document.querySelectorAll('a[href]'));
-    for (var i = 0; i < links.length; i++) {
-      if ((links[i].href || '').toLowerCase().includes('cl=details')) return links[i].href;
+    var searchInput = page.locator('input[name="searchparam"], input[placeholder*="Artikel"], input[type="search"]').first();
+    await searchInput.click({ timeout: 5000 });
+    await searchInput.fill('');
+    for (var ch of item.lshop_artikel) {
+      await searchInput.type(ch, { delay: 150 });
     }
-    for (var j = 0; j < links.length; j++) {
-      var href = (links[j].href || '').toLowerCase();
-      var text = (links[j].textContent || '').toLowerCase();
-      if (href.includes(art) || text.includes(art)) return links[j].href;
-    }
-    for (var k = 0; k < links.length; k++) {
-      var h = links[k].href || '';
-      if (h.includes('/de/') && h.includes('shop.l-shop-team.de') && h.length > 50) return h;
-    }
-    return null;
-  }, { artikelnummer: item.lshop_artikel });
+    await page.waitForTimeout(2500);
 
-  if (!productLink) throw new Error('Kein Produktlink fuer: ' + item.lshop_artikel + '. Gefundene Links: ' + allLinks.slice(0,5).map(function(l){return l.href;}).join(', '));
+    productUrl = await page.evaluate(function() {
+      var links = document.querySelectorAll('.ui-autocomplete li a, .ui-autocomplete a');
+      for (var i = 0; i < links.length; i++) {
+        var href = links[i].href;
+        if (href && href.includes('shop.l-shop-team.de')) return href;
+      }
+      return null;
+    });
 
-  console.log('Produkt: ' + productLink);
-  await page.goto(productLink, { waitUntil: 'networkidle', timeout: 20000 });
+    if (!productUrl) throw new Error('Kein Link gefunden fuer: ' + item.lshop_artikel + '. Bitte URL in products.json eintragen.');
+  }
+
+  // Zur Produktseite navigieren
+  await page.goto(productUrl, { waitUntil: 'networkidle', timeout: 20000 });
   await page.waitForTimeout(2500);
   console.log('Produkt URL: ' + page.url());
 
+  // Farbe auswählen
   console.log('Waehle Farbe: ' + item.farbe_lshop);
   var colorResult = await page.evaluate(function(data) {
     var target = data.colorName.toLowerCase().trim();
@@ -98,25 +103,37 @@ async function addSingleItem(page, item) {
       var el = allEls[i];
       if (el.children.length > 0) continue;
       var text = (el.textContent || '').trim().toLowerCase();
-      if (text === target) { var p = el.parentElement; if (p) { p.click(); return 'OK: ' + text; } el.click(); return 'OK-direct: ' + text; }
+      if (text === target) {
+        var p = el.parentElement;
+        if (p) { p.click(); return 'OK: ' + text; }
+        el.click(); return 'OK-direct: ' + text;
+      }
     }
+    // Partial match
     for (var j = 0; j < allEls.length; j++) {
       var el2 = allEls[j];
       if (el2.children.length > 0) continue;
       var text2 = (el2.textContent || '').trim().toLowerCase();
-      if (text2.length > 2 && (text2.includes(target) || target.includes(text2))) { var p2 = el2.parentElement; if (p2) { p2.click(); return 'PARTIAL: ' + text2; } }
+      if (text2.length > 2 && (text2.includes(target) || target.includes(text2))) {
+        var p2 = el2.parentElement;
+        if (p2) { p2.click(); return 'PARTIAL: ' + text2; }
+      }
     }
     return 'NICHT GEFUNDEN';
   }, { colorName: item.farbe_lshop });
   console.log('Farbe: ' + colorResult);
   await page.waitForTimeout(2000);
+
+  // Runterscrollen zur Größentabelle
   await page.evaluate(function() { window.scrollBy(0, 500); });
   await page.waitForTimeout(1000);
 
+  // Größe finden und + Button klicken
   console.log('Groesse: ' + item.groesse + ' | Menge: ' + item.quantity);
   var rows = page.locator('tr');
   var rowCount = await rows.count();
   var sizeFound = false;
+
   for (var r = 0; r < rowCount; r++) {
     var row = rows.nth(r);
     var cells = row.locator('td');
@@ -125,14 +142,19 @@ async function addSingleItem(page, item) {
       var cellText = '';
       try { cellText = (await cells.nth(c).textContent() || '').trim(); } catch (e) { continue; }
       if (cellText.toUpperCase() === item.groesse.toUpperCase()) {
-        console.log('Groesse ' + item.groesse + ' in Zeile ' + r);
+        console.log('Groesse ' + item.groesse + ' gefunden in Zeile ' + r);
         var plusBtn = row.locator('button:has-text("+")').first();
         if (await plusBtn.count() > 0) {
-          for (var q = 0; q < item.quantity; q++) { await plusBtn.click({ timeout: 3000 }); await page.waitForTimeout(300); }
+          for (var q = 0; q < item.quantity; q++) {
+            await plusBtn.click({ timeout: 3000 });
+            await page.waitForTimeout(300);
+          }
           console.log('+ geklickt ' + item.quantity + 'x');
         } else {
           var input = row.locator('input').first();
-          await input.click({ timeout: 2000 }); await input.fill(String(item.quantity)); await input.press('Tab');
+          await input.click({ timeout: 2000 });
+          await input.fill(String(item.quantity));
+          await input.press('Tab');
           console.log('Input gesetzt: ' + item.quantity);
         }
         sizeFound = true; break;
@@ -140,9 +162,11 @@ async function addSingleItem(page, item) {
     }
     if (sizeFound) break;
   }
-  if (!sizeFound) throw new Error('Groesse ' + item.groesse + ' nicht gefunden. Farbe: ' + colorResult);
 
+  if (!sizeFound) throw new Error('Groesse ' + item.groesse + ' nicht gefunden. Farbe: ' + colorResult);
   await page.waitForTimeout(500);
+
+  // In den Warenkorb
   console.log('In den Warenkorb...');
   var cartSelectors = ['button:has-text("In den Warenkorb")', 'button:has-text("Warenkorb")', 'button[name="wr"]', 'input[name="wr"]', '.btn-basket', '#toBasket'];
   for (var k = 0; k < cartSelectors.length; k++) {
