@@ -22,7 +22,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Caps/5-Panel-Caps-oxid/5-Panel-Snapback-Rapper-Cap.html"
     },
     {
       "shopify_title": "5 Panel Snapback mit Druck",
@@ -46,7 +47,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Caps/5-Panel-Caps-oxid/Urbanwear-5-Panel-Snapback.html"
     },
     {
       "shopify_title": "Arbeitsweste mit Druck",
@@ -94,7 +96,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Sweat-Shirts-oxid-1/Hooded-Sweats/Ladies-Heavy-Hoody.html"
     },
     {
       "shopify_title": "Basic T-Shirt Unisex mit Druck",
@@ -118,7 +121,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Basic-T-Shirts/Rundhals-oxid-1/T-Shirt-Round-Neck.html"
     },
     {
       "shopify_title": "Beanie Basic bedruckt",
@@ -142,7 +146,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Winteraccessoires-Muetzen/Muetzen/Thinsulate-Patch-Beanie.html"
     },
     {
       "shopify_title": "Beanie mit Rechteck Patch bedruckt",
@@ -166,7 +171,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Winteraccessoires-Muetzen/Muetzen/Deep-Cuffed-Tonal-Patch-Beanie.html"
     },
     {
       "shopify_title": "Beanie mit großem Patch bedruckt",
@@ -190,7 +196,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Winteraccessoires-Muetzen/Muetzen/Original-Patch-Beanie.html"
     },
     {
       "shopify_title": "Beanie mit kleinem Patch bedruckt",
@@ -214,7 +221,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Winteraccessoires-Muetzen/Muetzen/Fashion-Patch-Beanie.html"
     },
     {
       "shopify_title": "Beanie mit rundem Patch bedruckt",
@@ -238,7 +246,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Winteraccessoires-Muetzen/Muetzen/Circular-Fashion-Patch-Beanie.html"
     },
     {
       "shopify_title": "Bedruckbare Badelatschen",
@@ -286,7 +295,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Caps/Netz-Sport-Caps/Bubble-Cap.html"
     },
     {
       "shopify_title": "Classic Trucker Cap bedruckt",
@@ -310,7 +320,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Caps/Netz-Sport-Caps/Classic-Trucker.html"
     },
     {
       "shopify_title": "Cropped Oversize Herren T-Shirt mit Druck",
@@ -334,7 +345,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Fashion-T-Shirts-oxid/Rundhals/Cropped-Oversized-Tee.html"
     },
     {
       "shopify_title": "Damen Fleecejacke mit Druck",
@@ -358,7 +370,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Fleece/Fleece-Jacken/Ladies-Fleece-Jacket-oxid-1.html"
     },
     {
       "shopify_title": "Damen Fleeceweste mit Druck",
@@ -382,7 +395,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Westen-Bodywarmer/Fleece-oxid/Ladies-Fleece-Vest.html"
     },
     {
       "shopify_title": "Damen Poloshirt mit Druck",
@@ -406,319 +420,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Fischer Hut",
-      "shopify_keywords": [
-        "fischer hut"
-      ],
-      "lshop_artikel": "FX5003WR",
-      "lshop_name": "Fischer Hut",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Gürteltasche",
-      "shopify_keywords": [
-        "gürteltasche"
-      ],
-      "lshop_artikel": "CGW161",
-      "lshop_name": "Gürteltasche",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Half-Zip mit Druck",
-      "shopify_keywords": [
-        "half-zip"
-      ],
-      "lshop_artikel": "JN831",
-      "lshop_name": "Half-Zip",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Herren Fleecejacke mit Druck",
-      "shopify_keywords": [
-        "herren fleecejacke"
-      ],
-      "lshop_artikel": "JN1312",
-      "lshop_name": "Herren Fleecejacke",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Herren Fleeceweste mit Druck",
-      "shopify_keywords": [
-        "herren fleeceweste"
-      ],
-      "lshop_artikel": "JN1310",
-      "lshop_name": "Herren Fleeceweste",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Herren Poloshirt mit Druck",
-      "shopify_keywords": [
-        "herren poloshirt"
-      ],
-      "lshop_artikel": "JN070",
-      "lshop_name": "Herren Poloshirt",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Hoodie Herren mit Druck",
-      "shopify_keywords": [
-        "hoodie herren"
-      ],
-      "lshop_artikel": "BY011",
-      "lshop_name": "Hoodie Herren",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Kinder T-Shirt mit Druck",
-      "shopify_keywords": [
-        "kinder t-shirt"
-      ],
-      "lshop_artikel": "JN019",
-      "lshop_name": "Kinder T-Shirt",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Kochjacke mit Druck",
-      "shopify_keywords": [
-        "kochjacke"
-      ],
-      "lshop_artikel": "KY038",
-      "lshop_name": "Kochjacke",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Kochmützen bedruckt",
-      "shopify_keywords": [
-        "kochmützen"
-      ],
-      "lshop_artikel": "PW653",
-      "lshop_name": "Kochmützen",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Kochschürze Lang mit Druck",
-      "shopify_keywords": [
-        "kochschürze lang"
-      ],
-      "lshop_artikel": "KY006",
-      "lshop_name": "Kochschürze Lang",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Longsleeve Herren mit Druck",
-      "shopify_keywords": [
-        "longsleeve herren"
-      ],
-      "lshop_artikel": "JN913",
-      "lshop_name": "Longsleeve Herren",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Oversized Hoodie Damen mit Druck",
-      "shopify_keywords": [
-        "oversized hoodie damen"
-      ],
-      "lshop_artikel": "BY213",
-      "lshop_name": "Oversized Hoodie Damen",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Polo-Shirts-oxid/Mischgewebe/Ladies-Bio-Workwear-Polo.html"
     },
     {
       "shopify_title": "Oversized T-Shirt mit Druck",
@@ -742,127 +445,8 @@
         "bordeaux": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Poloshirt Damen mit Druck",
-      "shopify_keywords": [
-        "poloshirt damen"
-      ],
-      "lshop_artikel": "BY368",
-      "lshop_name": "Poloshirt Damen",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Poloshirt Herren mit Druck",
-      "shopify_keywords": [
-        "poloshirt herren"
-      ],
-      "lshop_artikel": "BY008",
-      "lshop_name": "Poloshirt Herren",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Schürze kurz mit Druck",
-      "shopify_keywords": [
-        "schürze kurz"
-      ],
-      "lshop_artikel": "KY005",
-      "lshop_name": "Schürze kurz",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Socken mit Druck",
-      "shopify_keywords": [
-        "socken"
-      ],
-      "lshop_artikel": "MRS5004",
-      "lshop_name": "Socken",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Softshell-Winterjacke mit Druck",
-      "shopify_keywords": [
-        "softshell-winterjacke"
-      ],
-      "lshop_artikel": "JN844",
-      "lshop_name": "Softshell-Winterjacke",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
+      },
+      "lshop_url": "https://shop.l-shop-team.de/Sortiment/Fashion-T-Shirts-oxid/Rundhals/Heavy-Oversize-Tee.html"
     },
     {
       "shopify_title": "Softshelljacke Damen mit Druck",
@@ -888,318 +472,6 @@
         "pink": "Pink"
       },
       "lshop_url": "https://shop.l-shop-team.de/Sortiment/Jacken/Jacken-Softshell/Nebraska-Woman-Softshell-Jacket.html"
-    },
-    {
-      "shopify_title": "Softshelljacke Herren mit Druck",
-      "shopify_keywords": [
-        "softshelljacke herren"
-      ],
-      "lshop_artikel": "RY6436",
-      "lshop_name": "Softshelljacke Herren",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Softshellweste Damen mit Druck",
-      "shopify_keywords": [
-        "softshellweste damen"
-      ],
-      "lshop_artikel": "RT902F",
-      "lshop_name": "Softshellweste Damen",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Softshellweste Herren mit Druck",
-      "shopify_keywords": [
-        "softshellweste herren"
-      ],
-      "lshop_artikel": "RT902",
-      "lshop_name": "Softshellweste Herren",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Sport Shorts mit Druck",
-      "shopify_keywords": [
-        "sport shorts"
-      ],
-      "lshop_artikel": "BY047",
-      "lshop_name": "Sport Shorts",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Sport T-Shirt Damen mit Druck",
-      "shopify_keywords": [
-        "sport t-shirt damen"
-      ],
-      "lshop_artikel": "JN357",
-      "lshop_name": "Sport T-Shirt Damen",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Sport T-Shirt Herren mit Druck",
-      "shopify_keywords": [
-        "sport t-shirt herren"
-      ],
-      "lshop_artikel": "JN358",
-      "lshop_name": "Sport T-Shirt Herren",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Sport T-Shirt Kinder mit Druck",
-      "shopify_keywords": [
-        "sport t-shirt kinder"
-      ],
-      "lshop_artikel": "JN358K-",
-      "lshop_name": "Sport T-Shirt Kinder",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Sweater Damen mit Druck",
-      "shopify_keywords": [
-        "sweater damen"
-      ],
-      "lshop_artikel": "BY212",
-      "lshop_name": "Sweater Damen",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Sweater Herren mit Druck",
-      "shopify_keywords": [
-        "sweater herren"
-      ],
-      "lshop_artikel": "BY075",
-      "lshop_name": "Sweater Herren",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Trucker Cap mit Druck",
-      "shopify_keywords": [
-        "trucker cap"
-      ],
-      "lshop_artikel": "CB640",
-      "lshop_name": "Trucker Cap",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Winter Arbeitshandschuhe mit Druck",
-      "shopify_keywords": [
-        "winter arbeitshandschuhe"
-      ],
-      "lshop_artikel": "RT258",
-      "lshop_name": "Winter Arbeitshandschuhe",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Winter Softshell Jacke mit Kapuze & Druck",
-      "shopify_keywords": [
-        "winter softshell jacke mit kapuze & druck"
-      ],
-      "lshop_artikel": "JN824",
-      "lshop_name": "Winter Softshell Jacke mit Kapuze & Druck",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
-    },
-    {
-      "shopify_title": "Zip Hoodie Unisex mit Druck",
-      "shopify_keywords": [
-        "zip hoodie unisex"
-      ],
-      "lshop_artikel": "BY012",
-      "lshop_name": "Zip Hoodie Unisex",
-      "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
-      }
     }
   ]
 }
