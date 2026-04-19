@@ -12,7 +12,6 @@ async function mapProductsToLShop(lineItems) {
       });
       if (!match) continue;
 
-      // Farbe bestimmen
       var farbe = '';
       var cm = p.farben_mapping || {};
       for (var de in cm) {
@@ -25,7 +24,6 @@ async function mapProductsToLShop(lineItems) {
         farbe = (item.variant_title || '').split('/')[0].trim();
       }
 
-      // Größe bestimmen mit Übersetzungstabelle
       var groesse = 'M';
       var sizeMap = {
         '2XL': 'XXL',
@@ -33,10 +31,10 @@ async function mapProductsToLShop(lineItems) {
         '4XL': '4XL',
         '5XL': '5XL',
         'XXXL': '3XL',
-        'XXXXL': '4XL'
+        'XXXXL': '4XL',
         'XXXXXL': '5XL'
       };
-      var m = variant.match(/\b(XS|S|M|L|2XL|3XL|4XL|5XL|XL|XXL|XXXL|XXXXL)\b/i);
+      var m = variant.match(/\b(XS|S|M|L|2XL|3XL|4XL|5XL|XL|XXL|XXXL|XXXXL|XXXXXL)\b/i);
       if (m) {
         var rawSize = m[1].toUpperCase();
         groesse = sizeMap[rawSize] || rawSize;
