@@ -86,36 +86,64 @@ async function addSingleItem(page, item) {
       }
       return null;
     });
-    if (!productUrl) throw new Error('Kein Link gefunden fuer: ' + item.lshop_artikel + '. Bitte "lshop_url" in products.json eintragen.');
+    if (!productUrl) throw new Error('Kein Link fuer: ' + item.lshop_artikel);
   }
 
-  await page.goto(productUrl, { waitUntil: 'networkidle', timeout: 20000 });
-  await page.waitForTimeout(2500);
+  // Zur Produktseite navigieren und WARTEN bis sie wirklich geladen ist
+  console.log('Navigiere zu: ' + productUrl);
+  await page.goto(productUrl, { waitUntil: 'networkidle', timeout: 30000 });
+
+  // Warte bis die URL stimmt und Seite fertig ist
+  await page.waitForTimeout(3000);
   console.log('Produkt URL: ' + page.url());
 
+  // Prüfe dass wir auf der richtigen Seite sind (nicht mehr auf alter Seite)
+  var currentUrl = page.url();
+  if (!currentUrl.includes(productUrl.split('/').pop().replace('.html', ''))) {
+    console.log('Warnung: URL stimmt nicht genau, warte nochmal...');
+    await page.waitForTimeout(2000);
+  }
+
+  // Farbe auswählen - nur Elemente die KEINE langen Texte sind
   console.log('Waehle Farbe: ' + item.farbe_lshop);
   var colorResult = await page.evaluate(function(data) {
     var target = data.colorName.toLowerCase().trim();
+
+    // Nur kurze Text-Elemente suchen (Farbnamen sind kurz, max 30 Zeichen)
     var allEls = Array.from(document.querySelectorAll('span, p, div, label, a, li'));
     for (var i = 0; i < allEls.length; i++) {
       var el = allEls[i];
       if (el.children.length > 0) continue;
-      var text = (el.textContent || '').trim().toLowerCase();
-      if (text === target) { var p = el.parentElement; if (p) { p.click(); return 'OK: ' + text; } el.click(); return 'OK-direct: ' + text; }
+      var text = (el.textContent || '').trim();
+      if (text.length > 35) continue; // Farbnamen sind kurz
+      if (text.toLowerCase() === target) {
+        var p = el.parentElement;
+        if (p) { p.click(); return 'OK: ' + text; }
+        el.click();
+        return 'OK-direct: ' + text;
+      }
     }
+    // Partial match - auch nur bei kurzen Texten
     for (var j = 0; j < allEls.length; j++) {
       var el2 = allEls[j];
       if (el2.children.length > 0) continue;
-      var text2 = (el2.textContent || '').trim().toLowerCase();
-      if (text2.length > 2 && (text2.includes(target) || target.includes(text2))) { var p2 = el2.parentElement; if (p2) { p2.click(); return 'PARTIAL: ' + text2; } }
+      var text2 = (el2.textContent || '').trim();
+      if (text2.length > 35) continue; // Keine langen Texte
+      var text2lower = text2.toLowerCase();
+      if (text2lower.length > 2 && (text2lower.includes(target) || target.includes(text2lower))) {
+        var p2 = el2.parentElement;
+        if (p2) { p2.click(); return 'PARTIAL: ' + text2; }
+      }
     }
     return 'NICHT GEFUNDEN';
   }, { colorName: item.farbe_lshop });
   console.log('Farbe: ' + colorResult);
-  await page.waitForTimeout(2000);
 
+  // Warte nach Farbauswahl bis Größentabelle lädt
+  await page.waitForTimeout(2500);
+
+  // Größentabelle - Menge setzen
   console.log('Groesse: ' + item.groesse + ' | Menge: ' + item.quantity);
-
   var sizeFound = await page.evaluate(function(data) {
     var groesse = data.groesse.toUpperCase();
     var quantity = data.quantity;
@@ -128,37 +156,28 @@ async function addSingleItem(page, item) {
       });
       if (!sizeMatch) continue;
 
-      // Sichtbare number/text inputs in dieser Zeile finden
       var inputs = Array.from(row.querySelectorAll('input[type="text"], input[type="number"]'));
-      var visibleInput = null;
       for (var j = 0; j < inputs.length; j++) {
         var inp = inputs[j];
         var style = window.getComputedStyle(inp);
         if (style.display !== 'none' && style.visibility !== 'hidden' && inp.offsetParent !== null) {
-          visibleInput = inp;
-          break;
+          inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          inp.focus();
+          inp.value = '';
+          inp.value = String(quantity);
+          inp.dispatchEvent(new Event('input', { bubbles: true }));
+          inp.dispatchEvent(new Event('change', { bubbles: true }));
+          inp.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
+          return true;
         }
       }
 
-      if (visibleInput) {
-        visibleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        visibleInput.focus();
-        visibleInput.value = '';
-        visibleInput.value = String(quantity);
-        visibleInput.dispatchEvent(new Event('input', { bubbles: true }));
-        visibleInput.dispatchEvent(new Event('change', { bubbles: true }));
-        visibleInput.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
-        return true;
-      }
-
-      // Fallback: + Button klicken
-      var plusBtns = Array.from(row.querySelectorAll('button'));
-      for (var k = 0; k < plusBtns.length; k++) {
-        if ((plusBtns[k].textContent || '').trim() === '+') {
-          plusBtns[k].scrollIntoView({ behavior: 'smooth', block: 'center' });
-          for (var q = 0; q < quantity; q++) {
-            plusBtns[k].click();
-          }
+      // Fallback: + Button
+      var btns = Array.from(row.querySelectorAll('button'));
+      for (var k = 0; k < btns.length; k++) {
+        if ((btns[k].textContent || '').trim() === '+') {
+          btns[k].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          for (var q = 0; q < quantity; q++) { btns[k].click(); }
           return true;
         }
       }
@@ -167,9 +186,10 @@ async function addSingleItem(page, item) {
   }, { groesse: item.groesse, quantity: item.quantity });
 
   console.log('Menge gesetzt: ' + sizeFound);
-  if (!sizeFound) throw new Error('Groesse ' + item.groesse + ' nicht gefunden. Farbe war: ' + colorResult);
+  if (!sizeFound) throw new Error('Groesse ' + item.groesse + ' nicht gefunden. Farbe: ' + colorResult);
   await page.waitForTimeout(1000);
 
+  // In den Warenkorb
   console.log('In den Warenkorb...');
   var cartSelectors = [
     'button:has-text("In den Warenkorb")',
