@@ -423,7 +423,7 @@
         "beige": "Beige",
         "bordeaux": "Burgundy",
         "lila": "Purple",
-        "pink": "Pink"
+        "Aqua": "Aqua"
       },
       "lshop_url": "https://shop.l-shop-team.de/Sortiment/Sweat-Shirts-oxid-1/Half-Zip-Sweats/Workwear-Half-Zip-Sweat.html"
     },
@@ -435,20 +435,12 @@
       "lshop_artikel": "JN1312",
       "lshop_name": "Herren Fleecejacke",
       "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
+        "Dark Melange": "Dark Melange",
+        "Schwarz": "Bacl/Black",
+        "Navy": "Navy/Black",
+        "Light Melange": "Lght Melange/Black",
+        "Rot": "Red/Black",
+        "Carbon": "Carbon/Black"
       },
       "lshop_url": "https://shop.l-shop-team.de/Sortiment/Fleece/Fleece-Jacken/Men-s-Fleece-Jacket-oxid-1.html"
     },
@@ -460,20 +452,12 @@
       "lshop_artikel": "JN1310",
       "lshop_name": "Herren Fleeceweste",
       "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
+        "Dark Melange": "Dark Melange",
+        "Schwarz": "Bacl/Black",
+        "Navy": "Navy/Black",
+        "Light Melange": "Lght Melange/Black",
+        "Rot": "Red/Black",
+        "Carbon": "Carbon/Black"
       },
       "lshop_url": "https://shop.l-shop-team.de/Sortiment/Westen-Bodywarmer/Fleece-oxid/Men-s-Fleece-Vest.html"
     },
@@ -497,7 +481,7 @@
         "orange": "Orange",
         "beige": "Beige",
         "bordeaux": "Burgundy",
-        "lila": "Purple",
+        "lila": "Lilac",
         "pink": "Pink"
       },
       "lshop_url": "https://shop.l-shop-team.de/Sortiment/Polo-Shirts/100-Baumwolle-oxid/Classic-Polo.html"
@@ -1040,20 +1024,7 @@
       "lshop_artikel": "RT258",
       "lshop_name": "Winter Arbeitshandschuhe",
       "farben_mapping": {
-        "weiß": "White",
-        "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
-        "orange": "Orange",
-        "beige": "Beige",
-        "bordeaux": "Burgundy",
-        "lila": "Purple",
-        "pink": "Pink"
+        "schwarz": "Black/Grey",
       },
       "lshop_url": "https://shop.l-shop-team.de/Shop-Only/Sport-Activity/Sport-Accessoires/Unisex-BIKEWEAR-Long-Gloves.html"
     },
@@ -1066,20 +1037,20 @@
       "lshop_artikel": "JN824",
       "lshop_name": "Winter Softshell Jacke mit Kapuze",
       "farben_mapping": {
-        "weiß": "White",
+        "weiß": "White/Carbon",
         "weiss": "White",
-        "schwarz": "Black",
-        "rot": "Red",
-        "navy": "Navy",
-        "blau": "Royal Blue",
+        "schwarz": "Black/Black",
+        "rot": "Red/Black",
+        "navy": "Navy/Navy",
+        "royal": "Royal/Navy",
         "grau": "Sport Grey",
-        "grün": "Bottle Green",
+        "dark green": "Dark Green",
         "gelb": "Yellow",
         "orange": "Orange",
         "beige": "Beige",
-        "bordeaux": "Burgundy",
+        "stone": "Stone/Black",
         "lila": "Purple",
-        "pink": "Pink"
+        "carbon/black": "Carbon/Black"
       },
       "lshop_url": "https://shop.l-shop-team.de/Sortiment/Arbeitskleidung/Softshell-Jacken/Craftsmen-Softshell-Jacket-STRONG.html"
     },
@@ -1094,17 +1065,19 @@
         "weiß": "White",
         "weiss": "White",
         "schwarz": "Black",
-        "rot": "Red",
+        "rot": "City Red",
         "navy": "Navy",
-        "blau": "Royal Blue",
-        "grau": "Sport Grey",
-        "grün": "Bottle Green",
-        "gelb": "Yellow",
+        "blau": "Intense Blue",
+        "braun": "Bark",
+        "grau": "Heather Grey",
+        "grün": "Olive",
+        "gelb": "Soft Yellow",
         "orange": "Orange",
         "beige": "Beige",
-        "bordeaux": "Burgundy",
+        "Weinrot": "Burgundy",
         "lila": "Purple",
         "pink": "Pink"
+        "Magnet": "Magnet",
       },
       "lshop_url": "https://shop.l-shop-team.de/Sortiment/Sweat-Shirts-oxid-1/Hooded-Jackets/Heavy-Zip-Hoody.html"
     }
