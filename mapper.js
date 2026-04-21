@@ -1,58 +1,164 @@
 const products = require('./config/products.json');
 
-// Komplette Shopify -> L-Shop Farb-Übersetzung
+// Vollständiges Mapping: Shopify Farbe -> L-Shop / Build Your Brand Farbe
 var FARBEN = {
-  "schwarz": "Black", "black": "Black", "black-carbon": "Black",
-  "black-fuchsia": "Black", "black-light-grey": "Black", "black-lime-green": "Black",
-  "black-orange": "Black", "black-red": "Black", "black-surf-blue": "Black",
-  "black-white": "Black", "black-yellow": "Black", "carbon-black": "Black",
-  "magnet": "Magnet", "carbon": "Carbon",
+  // === SCHWARZ / GRAU ===
+  "schwarz": "Black",
+  "black": "Black",
+  "black-carbon": "Black",
+  "black-fuchsia": "Black",
+  "black-light-grey": "Black",
+  "black-lime-green": "Black",
+  "black-orange": "Black",
+  "black-red": "Black",
+  "black-surf-blue": "Black",
+  "black-white": "Black",
+  "black-yellow": "Black",
+  "carbon-black": "Black",
+  "carbon": "Carbon",
+  "magnet": "Magnet",
   "graphite-grey-black": "Graphite Grey",
-  "weiß": "White", "weiss": "White", "white": "White", "white-carbon": "White",
-  "grau": "Sport Grey", "grey": "Sport Grey", "sport grey": "Sport Grey",
-  "dark-grey": "Dark Grey", "dark grey": "Dark Grey",
-  "dunkel grau": "Dark Grey", "dark-melange": "Dark Melange",
-  "dusty-grey": "Dusty Grey", "graphite-grey": "Graphite Grey",
-  "heather-grey": "Heather Grey", "light-grey": "Light Grey",
+  "graphite-grey": "Graphite Grey",
+  "dark-grey": "Dark Grey",
+  "dunkel grau": "Dark Grey",
+  "dark-melange": "Dark Melange",
+  "dusty-grey": "Dusty Grey",
+  "grau": "Heather Grey",
+  "grey": "Heather Grey",
+  "heather-grey": "Heather Grey",
+  "light-grey": "Light Grey",
   "light-melange": "Light Melange",
-  "rot": "Red", "red": "Red", "red-white": "Red",
-  "dark-orange": "Dark Orange", "fluorescent-orange": "Fluorescent Orange",
+  "dark shadow": "Dark Shadow",
+  "dark-shadow": "Dark Shadow",
+
+  // === WEISS ===
+  "weiß": "White",
+  "weiss": "White",
+  "white": "White",
+  "white-carbon": "White",
+
+  // === ROT / ORANGE ===
+  "rot": "Red",
+  "red": "Red",
+  "red-white": "Red",
+  "city-red": "City Red",
+  "city red": "City Red",
+  "dark-orange": "Dark Orange",
+  "fluorescent-orange": "Fluorescent Orange",
   "orange": "Orange",
-  "gelb": "Yellow", "yellow": "Yellow", "acid-yellow": "Acid Yellow",
-  "fluorescent-yellow": "Fluorescent Yellow", "gold": "Gold",
-  "gold-yellow": "Gold Yellow", "light-yellow": "Light Yellow",
-  "navy": "Navy", "dunkel blau": "Navy", "marineblau": "Navy",
-  "french-navy": "French Navy", "frnech-navy-white": "French Navy",
-  "oxford-navy": "Oxford Navy", "royal-navy": "Navy", "dark-royal": "Dark Royal",
-  "blau": "Royal Blue", "blue": "Royal Blue",
-  "bright-royal": "Bright Royal", "bright-royal-white": "Bright Royal",
-  "cobalt-blue": "Cobalt Blue", "cobalt blue": "Cobalt Blue",
-  "dusty-blue": "Dusty Blue", "light-blue": "Light Blue",
-  "pacific": "Pacific Blue", "royal": "Royal Blue",
-  "baby blau": "Baby Blue", "babyblau": "Baby Blue",
-  "airforce": "Airforce Blue", "carolina": "Carolina Blue",
-  "auqa": "Aqua", "turquoise": "Turquoise", "mint": "Mint",
-  "gruen": "Bottle Green", "green": "Bottle Green",
-  "bottle-green": "Bottle Green", "bottle green": "Bottle Green",
-  "dark-green": "Dark Green", "dusty-green": "Dusty Green",
-  "fern-green": "Fern Green", "irish-green": "Irish Green",
-  "kelly-green": "Kelly Green", "lime-green": "Lime Green",
-  "military-green": "Military Green", "olive": "Olive",
-  "olive-green": "Olive Green", "olive-green-black": "Olive Green",
-  "pure-green-white": "Pure Green", "lime-punch-235": "Lime Punch 235",
-  "lime punch 235": "Lime Punch 235",
-  "beige": "Beige", "biscuit": "Biscuit", "natural-stone": "Natural Stone",
-  "oatmeal": "Oatmeal", "sand": "Sand", "stone": "Stone",
-  "stone-black": "Stone", "walnut": "Walnut",
-  "braun": "Brown", "brown": "Brown", "chocolate-caramel": "Chocolate",
-  "schoko": "Chocolate",
-  "lila": "Purple", "purple": "Purple", "lila-1": "Purple",
+  "weinrot": "Wine Red",
+  "burgundy": "Burgundy",
+  "burgund": "Burgundy",
+  "bordeaux": "Burgundy",
+  "burgundy-light-grey": "Burgundy",
   "aubergine": "Aubergine",
-  "pink": "Pink", "dusky-pink": "Dusky Pink", "pastel-pink": "Pastel Pink",
+
+  // === GELB ===
+  "gelb": "Yellow",
+  "yellow": "Yellow",
+  "acid-yellow": "Acid Yellow",
+  "fluorescent-yellow": "Fluorescent Yellow",
+  "gold": "Gold",
+  "gold-yellow": "Gold Yellow",
+  "light-yellow": "Light Yellow",
+  "taxi-yellow": "Taxi Yellow",
+  "taxi yellow": "Taxi Yellow",
+  "frozen-yellow": "Frozen Yellow",
+  "frozen yellow": "Frozen Yellow",
+
+  // === BLAU ===
+  "navy": "Navy",
+  "dunkel blau": "Navy",
+  "marineblau": "Navy",
+  "french-navy": "French Navy",
+  "frnech-navy-white": "French Navy",
+  "oxford-navy": "Oxford Navy",
+  "royal-navy": "Navy",
+  "dark-royal": "Dark Royal",
+  "blau": "Royal Blue",
+  "blue": "Royal Blue",
+  "royal": "Royal Blue",
+  "bright-royal": "Bright Royal",
+  "bright-royal-white": "Bright Royal",
+  "cobalt-blue": "Cobalt Blue",
+  "cobalt blue": "Cobalt Blue",
+  "dusty-blue": "Dusty Blue",
+  "light-blue": "Light Blue",
+  "pacific": "Pacific Blue",
+  "baby blau": "Baby Blue",
+  "babyblau": "Baby Blue",
+  "airforce": "Airforce Blue",
+  "carolina": "Carolina Blue",
+  "ocean-blue": "Ocean Blue",
+  "ocean blue": "Ocean Blue",
+  "horizon-blue": "Horizon Blue",
+  "horizon blue": "Horizon Blue",
+  "beryl-blue": "Beryl Blue",
+  "beryl blue": "Beryl Blue",
+  "auqa": "Aqua",
+  "turquoise": "Turquoise",
+  "mint": "Mint",
+  "neo-mint": "Neo Mint",
+  "neo mint": "Neo Mint",
+
+  // === GRÜN ===
+  "gruen": "Bottle Green",
+  "green": "Bottle Green",
+  "bottle-green": "Bottle Green",
+  "bottle green": "Bottle Green",
+  "dark-green": "Dark Green",
+  "dusty-green": "Dusty Green",
+  "fern-green": "Fern Green",
+  "irish-green": "Irish Green",
+  "kelly-green": "Kelly Green",
+  "lime-green": "Lime Green",
+  "military-green": "Military Green",
+  "olive": "Olive",
+  "olive-green": "Olive Green",
+  "olive-green-black": "Olive Green",
+  "pure-green-white": "Pure Green",
+  "forest-green": "Forest Green",
+  "forest green": "Forest Green",
+  "lime-punch-235": "Lime Punch 235",
+  "lime punch 235": "Lime Punch 235",
+
+  // === BEIGE / BRAUN ===
+  "beige": "Beige",
+  "biscuit": "Biscuit",
+  "natural-stone": "Natural Stone",
+  "oatmeal": "Oatmeal",
+  "sand": "Sand",
+  "stone": "Stone",
+  "stone-black": "Stone",
+  "walnut": "Walnut",
+  "braun": "Brown",
+  "brown": "Brown",
+  "chocolate-caramel": "Chocolate",
+  "schoko": "Chocolate",
+  "bark": "Bark",
+  "u. beige": "U. Beige",
+  "union-beige": "U. Beige",
+  "union beige": "U. Beige",
+
+  // === PINK / LILA ===
+  "lila": "Lilac",
+  "lila-1": "Lilac",
+  "lilac": "Lilac",
+  "purple": "Purple",
+  "ultraviolet": "Ultraviolett",
+  "pink": "Pink",
   "rosa": "Rose",
-  "bordeaux": "Burgundy", "burgund": "Burgundy", "burgundy": "Burgundy",
-  "burgundy-light-grey": "Burgundy", "weinrot": "Wine Red",
-  "peach": "Peach"
+  "dusky-pink": "Dusky Pink",
+  "pastel-pink": "Pastel Pink",
+  "hibiskus-pink": "Hibiskus Pink",
+  "hibiskus pink": "Hibiskus Pink",
+  "pink-marshmallow": "Pink Marshmallow",
+  "pink marshmallow": "Pink Marshmallow",
+  "peach": "Peach",
+
+  // === SONSTIGE ===
+  "light-asphalt": "Light Asphalt",
+  "light asphalt": "Light Asphalt"
 };
 
 function mapColor(variantText) {
@@ -61,21 +167,22 @@ function mapColor(variantText) {
   var colorPart = variantText.split('/')[0].trim();
   var lower = colorPart.toLowerCase().replace(/\s+/g, ' ');
 
-  // Exakter Match
+  // 1. Exakter Match
   if (FARBEN[lower]) return FARBEN[lower];
 
-  // Match mit Bindestrichen als Leerzeichen
+  // 2. Mit Bindestrichen als Leerzeichen
   var withSpaces = lower.replace(/-/g, ' ');
   if (FARBEN[withSpaces]) return FARBEN[withSpaces];
 
-  // Partial match
+  // 3. Partial match (nur bei kurzen Schlüsseln)
   for (var key in FARBEN) {
-    if (lower.includes(key) || key.includes(lower)) {
+    if (key.length > 3 && (lower === key || lower.includes(key) || key.includes(lower))) {
       return FARBEN[key];
     }
   }
 
-  // Fallback: original zurückgeben (L-Shop Farbe direkt)
+  // 4. Fallback: original zurückgeben
+  console.log('Farbe nicht gemappt, nutze Original: ' + colorPart);
   return colorPart;
 }
 
@@ -91,10 +198,8 @@ async function mapProductsToLShop(lineItems) {
       });
       if (!match) continue;
 
-      // Farbe bestimmen
       var farbe = mapColor(variant);
 
-      // Größe bestimmen
       var groesse = 'M';
       var sizeMap = {
         '2XL': 'XXL', '3XL': '3XL', '4XL': '4XL', '5XL': '5XL',
