@@ -155,6 +155,9 @@ async function addSingleItem(page, item) {
           inp.dispatchEvent(new Event('input', { bubbles: true }));
           inp.dispatchEvent(new Event('change', { bubbles: true }));
           inp.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
+          inp.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+          inp.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
+          inp.blur();
           return true;
         }
       }
