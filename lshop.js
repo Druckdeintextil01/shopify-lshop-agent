@@ -67,9 +67,8 @@ async function login(page) {
 async function addSingleItem(page, item) {
   var productUrl = item.lshop_url || null;
   if (productUrl) {
-    console.log('Direkter Link: ' + productUrl);
+    console.log('Navigiere zu: ' + productUrl);
   } else {
-    console.log('Suche: ' + item.lshop_artikel);
     await page.goto(LSHOP_URL + '/index.php?lang=0', { waitUntil: 'networkidle', timeout: 20000 });
     await page.waitForTimeout(2000);
     var searchInput = page.locator('input[name="searchparam"], input[placeholder*="Artikel"], input[type="search"]').first();
@@ -89,33 +88,22 @@ async function addSingleItem(page, item) {
     if (!productUrl) throw new Error('Kein Link fuer: ' + item.lshop_artikel);
   }
 
-  // Zur Produktseite navigieren und WARTEN bis sie wirklich geladen ist
-  console.log('Navigiere zu: ' + productUrl);
   await page.goto(productUrl, { waitUntil: 'networkidle', timeout: 30000 });
-
-  // Warte bis die URL stimmt und Seite fertig ist
   await page.waitForTimeout(3000);
   console.log('Produkt URL: ' + page.url());
 
-  // Prüfe dass wir auf der richtigen Seite sind (nicht mehr auf alter Seite)
-  var currentUrl = page.url();
-  if (!currentUrl.includes(productUrl.split('/').pop().replace('.html', ''))) {
-    console.log('Warnung: URL stimmt nicht genau, warte nochmal...');
-    await page.waitForTimeout(2000);
-  }
-
-  // Farbe auswählen - nur Elemente die KEINE langen Texte sind
+  // Farbe auswaehlen - NUR exakter Match auf kurzen Texten
   console.log('Waehle Farbe: ' + item.farbe_lshop);
   var colorResult = await page.evaluate(function(data) {
     var target = data.colorName.toLowerCase().trim();
 
-    // Nur kurze Text-Elemente suchen (Farbnamen sind kurz, max 30 Zeichen)
-    var allEls = Array.from(document.querySelectorAll('span, p, div, label, a, li'));
+    var allEls = Array.from(document.querySelectorAll('span, div, label, li, a, p'));
     for (var i = 0; i < allEls.length; i++) {
       var el = allEls[i];
       if (el.children.length > 0) continue;
       var text = (el.textContent || '').trim();
-      if (text.length > 35) continue; // Farbnamen sind kurz
+      // Nur kurze Texte pruefen (max 30 Zeichen) - verhindert Treffer in langen Beschreibungen
+      if (text.length > 30) continue;
       if (text.toLowerCase() === target) {
         var p = el.parentElement;
         if (p) { p.click(); return 'OK: ' + text; }
@@ -123,26 +111,25 @@ async function addSingleItem(page, item) {
         return 'OK-direct: ' + text;
       }
     }
-    // Partial match - auch nur bei kurzen Texten
+
+    // Partial match - nur wenn Farbe im Text vorkommt UND Text kurz ist
     for (var j = 0; j < allEls.length; j++) {
       var el2 = allEls[j];
       if (el2.children.length > 0) continue;
       var text2 = (el2.textContent || '').trim();
-      if (text2.length > 35) continue; // Keine langen Texte
-      var text2lower = text2.toLowerCase();
-      if (text2lower.length > 2 && (text2lower.includes(target) || target.includes(text2lower))) {
+      if (text2.length > 30) continue; // Keine langen Texte!
+      if (text2.toLowerCase().includes(target)) {
         var p2 = el2.parentElement;
         if (p2) { p2.click(); return 'PARTIAL: ' + text2; }
       }
     }
+
     return 'NICHT GEFUNDEN';
   }, { colorName: item.farbe_lshop });
   console.log('Farbe: ' + colorResult);
-
-  // Warte nach Farbauswahl bis Größentabelle lädt
   await page.waitForTimeout(2500);
 
-  // Größentabelle - Menge setzen
+  // Groesse und Menge setzen
   console.log('Groesse: ' + item.groesse + ' | Menge: ' + item.quantity);
   var sizeFound = await page.evaluate(function(data) {
     var groesse = data.groesse.toUpperCase();
@@ -171,8 +158,6 @@ async function addSingleItem(page, item) {
           return true;
         }
       }
-
-      // Fallback: + Button
       var btns = Array.from(row.querySelectorAll('button'));
       for (var k = 0; k < btns.length; k++) {
         if ((btns[k].textContent || '').trim() === '+') {
@@ -186,7 +171,7 @@ async function addSingleItem(page, item) {
   }, { groesse: item.groesse, quantity: item.quantity });
 
   console.log('Menge gesetzt: ' + sizeFound);
-  if (!sizeFound) throw new Error('Groesse ' + item.groesse + ' nicht gefunden. Farbe: ' + colorResult);
+  if (!sizeFound) throw new Error('Groesse ' + item.groesse + ' nicht gefunden. Farbe war: ' + colorResult);
   await page.waitForTimeout(1000);
 
   // In den Warenkorb
